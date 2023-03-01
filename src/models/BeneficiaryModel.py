@@ -48,7 +48,7 @@ class BeneficiaryModel(db.Model):
         self.parentezco = data.get("parentezco")
         self.sexo = data.get("sexo")
         self.statusId = data.get("statusId")
-        fechaNacimiento = data.get("fechaNacimiento")
+        self.fechaNacimiento = data.get("fechaNacimiento")
         self.fechaAlta = datetime.datetime.utcnow()
         self.fechaUltimaModificacion = datetime.datetime.utcnow()
 

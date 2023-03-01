@@ -51,12 +51,12 @@ class EmployersModel(db.Model):
         self.foto = data.get("foto")
         self.sexo = data.get("sexo")
         self.statusId = data.get("statusId")
-        username = data.get("username")
-        password = data.get("password")
-        puesto = data.get("puesto")
-        salario = data.get("salario")
-        fechaContratacion = data.get("fechaContratacion")
-        rolId = data.get("rolId")
+        self.username = data.get("username")
+        self.password = data.get("password")
+        self.puesto = data.get("puesto")
+        self.salario = data.get("salario")
+        self.fechaContratacion = data.get("fechaContratacion")
+        self.rolId = data.get("rolId")
         self.fechaAlta = datetime.datetime.utcnow()
         self.fechaUltimaModificacion = datetime.datetime.utcnow()
 
@@ -110,72 +110,94 @@ class EmployersModel(db.Model):
     def __repr(self):
         return '<id {}>'.format(self.id)
 
-class BeneficiarySchema(Schema):
+class EmployersSchema(Schema):
     """
     Catalogo Schema
     """
     id = fields.Int()
     nombre = fields.Str(required=True, validate=[validate.Length(max=100)])
     foto = fields.Str()
-    parentezco = fields.Str(required=True, validate=[validate.Length(max=100)])
     sexo = fields.Str(required=True, validate=[validate.Length(max=100)])
-    statusId = costo = fields.Integer()
-    fechaNacimiento = fechaAlta = fields.Date()
-    fechaAlta = fechaAlta = fields.DateTime()
-    fechaUltimaModificacion = fechaAlta = fields.DateTime()
+    statusId  = fields.Integer()
+    fechaAlta = fields.DateTime()
+    fechaUltimaModificacion = fields.DateTime()
     status = fields.Nested(EstatusUsuariosSchema)
     rolId = fields.Integer(required=True)
     rol=fields.Nested(RolesSchema)
+    puesto = fields.Str(required=True, validate=[validate.Length(max=100)])
+    salario = fields.Integer(required=True)
+    fechaContratacion = fields.Date()
     
 
-class BeneficiarySchemaSomeFields(Schema):
+class EmployersSchemaSomeFields(Schema):
     """
     Catalogo Schema
     """
     id = fields.Int()
     nombre = fields.Str(required=True, validate=[validate.Length(max=100)])
     foto = fields.Str()
-    parentezco = fields.Str(required=True, validate=[validate.Length(max=100)])
     sexo = fields.Str(required=True, validate=[validate.Length(max=100)])
-    statusId = costo = fields.Integer()
-    fechaNacimiento = fechaAlta = fields.Date()
-    fechaAlta = fechaAlta = fields.DateTime()
-    fechaUltimaModificacion = fechaAlta = fields.DateTime()
+    statusId = fields.Integer()
+    fechaAlta  = fields.DateTime()
+    fechaUltimaModificacion  = fields.DateTime()
     status = fields.Nested(EstatusUsuariosSchema)
     rolId = fields.Integer(required=True)
     rol=fields.Nested(RolesSchema)
+    puesto = fields.Str(required=True, validate=[validate.Length(max=100)])
+    salario = fields.Integer(required=True)
+    fechaContratacion = fields.Date()
 
-class BeneficiarySchemaUpdate(Schema):
+class EmployersSchemaUpdate(Schema):
     """
     Catalogo Schema
     """
     id = fields.Int()
     nombre = fields.Str(required=True, validate=[validate.Length(max=100)])
     foto = fields.Str()
-    parentezco = fields.Str(required=True, validate=[validate.Length(max=100)])
     sexo = fields.Str(required=True, validate=[validate.Length(max=100)])
-    statusId = costo = fields.Integer()
-    fechaNacimiento = fechaAlta = fields.Date()
-    fechaAlta = fechaAlta = fields.DateTime()
-    fechaUltimaModificacion = fechaAlta = fields.DateTime()
+    statusId = fields.Integer()
+    fechaAlta  = fields.DateTime()
+    fechaUltimaModificacion  = fields.DateTime()
     status = fields.Nested(EstatusUsuariosSchema)
     rolId = fields.Integer(required=True)
     rol=fields.Nested(RolesSchema)
+    puesto = fields.Str(required=True, validate=[validate.Length(max=100)])
+    salario = fields.Integer(required=True)
+    fechaContratacion = fields.Date()
 
 
-class BeneficiarySchemaQuery(Schema):
+class EmployersSchemaQuery(Schema):
     """
     Catalogo Schema
     """
     id = fields.Int()
     nombre = fields.Str(required=True, validate=[validate.Length(max=100)])
     foto = fields.Str()
-    parentezco = fields.Str(required=True, validate=[validate.Length(max=100)])
     sexo = fields.Str(required=True, validate=[validate.Length(max=100)])
-    statusId = costo = fields.Integer()
-    fechaNacimiento = fechaAlta = fields.Date()
-    fechaAlta = fechaAlta = fields.DateTime()
-    fechaUltimaModificacion = fechaAlta = fields.DateTime()
+    statusId  = fields.Integer()
+    fechaAlta  = fields.DateTime()
+    fechaUltimaModificacion  = fields.DateTime()
     status = fields.Nested(EstatusUsuariosSchema)
     rolId = fields.Integer(required=True)
     rol=fields.Nested(RolesSchema)
+    puesto = fields.Str(required=True, validate=[validate.Length(max=100)])
+    salario = fields.Integer(required=True)
+    fechaContratacion = fields.Date()
+
+class EmployersLoginSchema(Schema):
+    """
+    user Schema
+    """
+    username = fields.Str(required=True, validate=[validate.Length(max=100)])
+    password = fields.Str(required=True,load_only=True)
+
+
+class EmployersLoginUpdateSchema(Schema):
+    """
+    user Schema
+    """
+    id = fields.Int(required=True)
+    username = fields.Str(required=True, validate=[validate.Length(max=100)])
+    password = fields.Str(required=True,load_only=True)
+
+
