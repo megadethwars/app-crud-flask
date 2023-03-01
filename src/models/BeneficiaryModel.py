@@ -3,6 +3,7 @@ from pkgutil import ModuleInfo
 from marshmallow import fields, Schema, validate
 import datetime
 from .StatusModel import EstatusUsuariosModel, EstatusUsuariosSchema
+from .EmployersModel import EmployersModel
 from sqlalchemy import desc
 import sqlalchemy
 from . import db
@@ -21,6 +22,9 @@ class BeneficiaryModel(db.Model):
     statusId= db.Column(
         db.Integer,db.ForeignKey("invStatusUsuarios.id"),nullable=False
     )
+    empleadoId= db.Column(
+        db.Integer,db.ForeignKey("invEmpleados.id"),nullable=False
+    )
     fechaAlta = db.Column(db.Date)
     fechaUltimaModificacion = db.Column(db.DateTime)
     fechaNacimiento = db.Column(db.Date)
@@ -28,6 +32,9 @@ class BeneficiaryModel(db.Model):
 
     status=db.relationship(
         "EstatusUsuariosModel",backref=db.backref("invStatusUsuarios",lazy=True)
+    )
+    empleado=db.relationship(
+        "EmployersModel",backref=db.backref("invEmpleados",lazy=True)
     )
 
 
