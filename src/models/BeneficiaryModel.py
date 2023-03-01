@@ -49,6 +49,7 @@ class BeneficiaryModel(db.Model):
         self.sexo = data.get("sexo")
         self.statusId = data.get("statusId")
         self.fechaNacimiento = data.get("fechaNacimiento")
+        self.empleadoId = data.get("empleadoId")
         self.fechaAlta = datetime.datetime.utcnow()
         self.fechaUltimaModificacion = datetime.datetime.utcnow()
 
@@ -76,15 +77,15 @@ class BeneficiaryModel(db.Model):
         return BeneficiaryModel.query.get(id)
 
     @staticmethod
-    def get_devices_by_nombre(value):
+    def get_beneficiary_by_nombre(value):
         return BeneficiaryModel.query.filter_by(nombre=value).first()
 
     @staticmethod
-    def get_devices_by_sexo(value):
+    def get_beneficiary_by_sexo(value):
         return BeneficiaryModel.query.filter_by(sexo=value).first()
     
     @staticmethod
-    def get_device_by_nombre_like(value,offset,limit):
+    def get_beneficiary_by_nombre_like(value,offset,limit):
         return BeneficiaryModel.query.filter(BeneficiaryModel.nombre.ilike(f'%{value}%') ).order_by(BeneficiaryModel.id).paginate(offset,limit,error_out=False)
 
 
@@ -92,7 +93,7 @@ class BeneficiaryModel(db.Model):
 
 
     @staticmethod
-    def get_devices_by_query(jsonFiltros,offset=1,limit=100):
+    def get_beneficiary_by_query(jsonFiltros,offset=1,limit=100):
         #return DispositivosModel.query.filter_by(**jsonFiltros).paginate(offset,limit,error_out=False)
         return BeneficiaryModel.query.filter_by(**jsonFiltros).order_by(BeneficiaryModel.id).paginate(offset,limit,error_out=False) 
 
@@ -111,10 +112,11 @@ class BeneficiarySchema(Schema):
     foto = fields.Str()
     parentezco = fields.Str(required=True, validate=[validate.Length(max=100)])
     sexo = fields.Str(required=True, validate=[validate.Length(max=100)])
-    statusId = costo = fields.Integer()
-    fechaNacimiento = fechaAlta = fields.Date()
-    fechaAlta = fechaAlta = fields.DateTime()
-    fechaUltimaModificacion = fechaAlta = fields.DateTime()
+    statusId = fields.Integer()
+    fechaNacimiento  = fields.Date()
+    fechaAlta  = fields.DateTime()
+    empleadoId = fields.Integer()
+    fechaUltimaModificacion  = fields.DateTime()
     status = fields.Nested(EstatusUsuariosSchema)
     
 
@@ -127,11 +129,12 @@ class BeneficiarySchemaSomeFields(Schema):
     foto = fields.Str()
     parentezco = fields.Str(required=True, validate=[validate.Length(max=100)])
     sexo = fields.Str(required=True, validate=[validate.Length(max=100)])
-    statusId = costo = fields.Integer()
-    fechaNacimiento = fechaAlta = fields.Date()
-    fechaAlta = fechaAlta = fields.DateTime()
-    fechaUltimaModificacion = fechaAlta = fields.DateTime()
+    statusId  = fields.Integer()
+    fechaNacimiento  = fields.Date()
+    fechaAlta  = fields.DateTime()
+    fechaUltimaModificacion = fields.DateTime()
     status = fields.Nested(EstatusUsuariosSchema)
+    empleadoId = fields.Integer()
 
 class BeneficiarySchemaUpdate(Schema):
     """
@@ -142,11 +145,12 @@ class BeneficiarySchemaUpdate(Schema):
     foto = fields.Str()
     parentezco = fields.Str(required=True, validate=[validate.Length(max=100)])
     sexo = fields.Str(required=True, validate=[validate.Length(max=100)])
-    statusId = costo = fields.Integer()
-    fechaNacimiento = fechaAlta = fields.Date()
-    fechaAlta = fechaAlta = fields.DateTime()
-    fechaUltimaModificacion = fechaAlta = fields.DateTime()
+    statusId  = fields.Integer()
+    fechaNacimiento  = fields.Date()
+    fechaAlta  = fields.DateTime()
+    fechaUltimaModificacion  = fields.DateTime()
     status = fields.Nested(EstatusUsuariosSchema)
+    empleadoId = fields.Integer()
 
 
 class BeneficiarySchemaQuery(Schema):
@@ -158,8 +162,9 @@ class BeneficiarySchemaQuery(Schema):
     foto = fields.Str()
     parentezco = fields.Str(required=True, validate=[validate.Length(max=100)])
     sexo = fields.Str(required=True, validate=[validate.Length(max=100)])
-    statusId = costo = fields.Integer()
-    fechaNacimiento = fechaAlta = fields.Date()
-    fechaAlta = fechaAlta = fields.DateTime()
-    fechaUltimaModificacion = fechaAlta = fields.DateTime()
+    statusId  = fields.Integer()
+    fechaNacimiento  = fields.Date()
+    fechaAlta = fields.DateTime()
+    fechaUltimaModificacion  = fields.DateTime()
     status = fields.Nested(EstatusUsuariosSchema)
+    empleadoId = fields.Integer()

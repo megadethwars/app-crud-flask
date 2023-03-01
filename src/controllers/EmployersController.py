@@ -108,7 +108,7 @@ def createUsers(req_data, listaObjetosCreados, listaErrores):
         return returnCodes.custom_response(None, 400, "TPM-2", str(err))
 
     # Aquí hacemos las validaciones para ver si el catalogo de negocio ya existe previamente
-    user_in_db = EmployersModel.get_users_by_username(data.get("username"))
+    user_in_db = EmployersModel.get_employers_by_username(data.get("username"))
     if user_in_db:
         error = returnCodes.partial_response("TPM-5","",data.get("username"))
         listaErrores.append(error)
@@ -163,7 +163,7 @@ class UsersLogin(Resource):
         except ValidationError as err:    
             return returnCodes.custom_response(None, 400, "TPM-2", str(err))
 
-        user = EmployersModel.get_users_by_username(data.get("username"))
+        user = EmployersModel.get_employers_by_username(data.get("username"))
         if not user:
             
             return returnCodes.custom_response(None, 404, "TPM-4","Usuario no encontrado")
@@ -195,10 +195,10 @@ class Usersupdatepass(Resource):
         except ValidationError as err:    
             return returnCodes.custom_response(None, 400, "TPM-2", str(err))
 
-        user = EmployersModel.get_one_users(data.get("id"))
+        user = EmployersModel.get_all_emp(data.get("id"))
         if not user:
             
-            return returnCodes.custom_response(None, 404, "TPM-4","Usuario no encontrado")
+            return returnCodes.custom_response(None, 404, "TPM-4","empleado no encontrado")
 
         data['password'] = generate_password_hash(data['password'])
 
@@ -214,7 +214,7 @@ class Usersupdatepass(Resource):
 
 @nsEmployers.route("")
 class UsersList(Resource):
-    @nsEmployers.doc("lista de  usuarios")
+    @nsEmployers.doc("lista de  empleados")
     def get(self):
         """List all status"""
         print('getting')
@@ -266,21 +266,21 @@ class UsersList(Resource):
         except ValidationError as err:
             return returnCodes.custom_response(None, 400, "TPM-2", str(err))
 
-        user = EmployersModel.get_one_users(data.get("id"))
+        user = EmployersModel.get_one_emp(data.get("id"))
         if not user:
             
             return returnCodes.custom_response(None, 404, "TPM-4")
         if "rolId" in data:
             rol_in_db = RolesModel.get_one_rol(data.get("rolId"))
             if not rol_in_db:
-                #error = returnCodes.custom_response(None, 409, "TPM-5", "", data.get("nombre")).json
+    
                 
                 return returnCodes.custom_response(None, 409, "TPM-4", "", data.get("rolId"))
 
         if "statusId" in data:
             status_in_db = EstatusUsuariosModel.get_one_status(data.get("statusId"))
             if not status_in_db:
-                #error = returnCodes.custom_response(None, 409, "TPM-5", "", data.get("nombre")).json
+       
                 
                 return returnCodes.custom_response(None, 409, "TPM-4", "", data.get("statusId"))
 
@@ -299,7 +299,7 @@ class OneCatalogo(Resource):
     @nsEmployers.doc("obtener un usuario")
     def get(self, id):
        
-        rol = EmployersModel.get_one_users(id)
+        rol = EmployersModel.get_one_emp(id)
         if not rol:
             return returnCodes.custom_response(None, 404, "TPM-4")
 
@@ -336,9 +336,9 @@ class UserQuery(Resource):
         except ValidationError as err:
             return returnCodes.custom_response(None, 400, "TPM-2", str(err))
 
-        devices = EmployersModel.get_users_by_query(data,offset,limit)
-        if not devices:
+        users = EmployersModel.get_employers_by_query(data,offset,limit)
+        if not users:
             return returnCodes.custom_response(None, 404, "TPM-4")
 
-        serialized_device = employers_schema.dump(devices.items,many=True)
+        serialized_device = employers_schema.dump(users.items,many=True)
         return returnCodes.custom_response(serialized_device, 200, "TPM-3")

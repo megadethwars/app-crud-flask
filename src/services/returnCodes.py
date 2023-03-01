@@ -35,7 +35,7 @@ def partial_response(app_code,message="",name="",id=0):
             "id":id
             }
 
-def custom_response(res, status_code, app_code, message="", item=[]):
+def custom_response(res, status_code, app_code, message="", item=[],token=""):
     """
     Custom Response Function
     """
@@ -51,11 +51,20 @@ def custom_response(res, status_code, app_code, message="", item=[]):
     else:
         messageSent.append({"object":item})       
 
-    response = {
-        "app_code": app_code,
-        "message": messageSent,
-        "data": res,
-    }
+    if token!="":
+        response = {
+            "app_code": app_code,
+            "message": messageSent,
+            "data": res,
+            "token": token
+        }
+    else:
+        response = {
+            "app_code": app_code,
+            "message": messageSent,
+            "data": res
+        }
+
     return Response(
         mimetype="application/json",
         response=json.dumps(response),

@@ -75,24 +75,28 @@ class EmployersModel(db.Model):
         db.session.commit()
 
     @staticmethod
-    def get_all_ben(offset=1,limit=10):
+    def get_all_emp(offset=1,limit=10):
         return EmployersModel.query.order_by(EmployersModel.id).paginate(offset,limit,error_out=False) 
 
 
     @staticmethod
-    def get_one_ben(id):
+    def get_one_emp(id):
         return EmployersModel.query.get(id)
 
     @staticmethod
-    def get_devices_by_nombre(value):
+    def get_employers_by_nombre(value):
         return EmployersModel.query.filter_by(nombre=value).first()
+    
+    @staticmethod
+    def get_employers_by_username(value):
+        return EmployersModel.query.filter_by(username=value).first()
 
     @staticmethod
-    def get_devices_by_sexo(value):
+    def get_employers_by_sexo(value):
         return EmployersModel.query.filter_by(sexo=value).first()
     
     @staticmethod
-    def get_device_by_nombre_like(value,offset,limit):
+    def get_employers_by_nombre_like(value,offset,limit):
         return EmployersModel.query.filter(EmployersModel.nombre.ilike(f'%{value}%') ).order_by(EmployersModel.id).paginate(offset,limit,error_out=False)
 
 
@@ -100,8 +104,8 @@ class EmployersModel(db.Model):
 
 
     @staticmethod
-    def get_devices_by_query(jsonFiltros,offset=1,limit=100):
-        #return DispositivosModel.query.filter_by(**jsonFiltros).paginate(offset,limit,error_out=False)
+    def get_employers_by_query(jsonFiltros,offset=1,limit=100):
+      
         return EmployersModel.query.filter_by(**jsonFiltros).order_by(EmployersModel.id).paginate(offset,limit,error_out=False) 
 
 
