@@ -17,6 +17,7 @@ from .controllers.StatusController import nsStatusUser
 
 from flask_restx import Api, fields, Resource
 from flask_sqlalchemy import SQLAlchemy
+from flask_jwt_extended import JWTManager
 
 def create_app(env_name):
     """
@@ -29,6 +30,10 @@ def create_app(env_name):
 
     #app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pymssql://forrerunner97:Asterisco97@inventarioavs1.database.windows.net/avsInventory'
     app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pymssql://master:peacesells2100@DESKTOP-FGFDBVD\\TEW_SQLEXPRESS/crud_manager'
+    
+    app.config['JWT_SECRET_KEY'] = 'super-secret'  # La clave secreta que se utilizará para firmar los tokens JWT
+    jwt = JWTManager(app)
+    
     db.init_app(app)
 
     migrate = Migrate(app, db)

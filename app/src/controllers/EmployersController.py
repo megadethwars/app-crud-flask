@@ -7,6 +7,7 @@ from ..models import db
 from ..services import returnCodes
 from flask_restx import Api,fields,Resource
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 
 app = Flask(__name__)
 Employer_api = Blueprint("employers_api", __name__)
@@ -168,7 +169,8 @@ class UsersLogin(Resource):
         if check_password_hash(user.password,data['password'])==False:
             return returnCodes.custom_response(None, 401, "TPM-10","acceso no autorizado, usuario y/o contraseña incorrecto")
         serialized_user = employers_schema.dump(user)
-        return returnCodes.custom_response(serialized_user, 201, "TPM-18")
+        access_token = create_access_token(identity=user.username)
+        return returnCodes.custom_response(serialized_user, 201, "TPM-18","",[],str(access_token))
 
 
 @nsEmployers.route("/pass")
@@ -208,6 +210,7 @@ class Usersupdatepass(Resource):
 @nsEmployers.route("")
 class UsersList(Resource):
     @nsEmployers.doc("lista de  empleados")
+    @jwt_required()
     def get(self):
         """List all status"""
         print('getting')
