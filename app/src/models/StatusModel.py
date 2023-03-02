@@ -45,9 +45,9 @@ class EstatusUsuariosModel(db.Model):
     @staticmethod
     def get_one_status(id):
         return EstatusUsuariosModel.query.get(id)
-
+    
     @staticmethod
-    def get_status_by_tipo(value):
+    def get_status_by_nombre(value):
         return EstatusUsuariosModel.query.filter_by(descripcion=value).first()
 
     def __repr(self):

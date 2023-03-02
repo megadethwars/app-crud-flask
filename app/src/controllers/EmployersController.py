@@ -98,15 +98,8 @@ UsersPutApi = nsEmployers.model(
 )
 
 def createUsers(req_data, listaObjetosCreados, listaErrores):
-    data = None
-    try:
-        data = employers_schema.load(req_data)
-    except ValidationError as err:
-     
-        error = returnCodes.partial_response("TPM-2",str(err))
-        listaErrores.append(error)
-        return returnCodes.custom_response(None, 400, "TPM-2", str(err))
-
+    data = req_data
+   
     # Aquí hacemos las validaciones para ver si el catalogo de negocio ya existe previamente
     user_in_db = EmployersModel.get_employers_by_username(data.get("username"))
     if user_in_db:

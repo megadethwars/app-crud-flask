@@ -23,10 +23,7 @@ UsersModelApi = nsBeneficiary.model(
     {
      
         "nombre": fields.String(required=True, description="nombre"),
-        "username":fields.String(required=True, description="username"),
-        "password":fields.String(required=True, description="password"),
         "foto":fields.String( description="foto"),
-        "rolId":fields.Integer(required=True, description="rolId"),
         "statusId":fields.Integer(required=True, description="statusId"),
         "fechaNacimiento":fields.String(required=True, description="fecha nacimiento"),
         "sexo":fields.String(required=True, description="genero"),
@@ -40,8 +37,6 @@ UsersModelQueryApi = nsBeneficiary.model(
     {
      
         "nombre": fields.String(required=True, description="nombre"),
-        "username":fields.String(required=True, description="username"),
-        "password":fields.String(required=True, description="password"),
         "foto":fields.String( description="foto"),
         "rolId":fields.Integer(required=True, description="rolId"),
         "statusId":fields.Integer(required=True, description="statusId"),
@@ -61,10 +56,7 @@ UsersPutApi = nsBeneficiary.model(
     {
         "id": fields.Integer(required=True, description="identificador"),
         "nombre": fields.String(required=True, description="nombre"),
-        "username":fields.String(required=True, description="username"),
-        "password":fields.String(required=True, description="password"),
         "foto":fields.String( description="foto"),
-        "rolId":fields.Integer(required=True, description="rolId"),
         "statusId":fields.Integer(required=True, description="statusId"),
         "fechaNacimiento":fields.String(required=True, description="fecha nacimiento"),
         "sexo":fields.String(required=True, description="genero"),
@@ -74,20 +66,14 @@ UsersPutApi = nsBeneficiary.model(
 )
 
 def createUsers(req_data, listaObjetosCreados, listaErrores):
-    data = None
-    try:
-        data = beneficiary_schema.load(req_data)
-    except ValidationError as err:
-     
-        error = returnCodes.partial_response("TPM-2",str(err))
-        listaErrores.append(error)
-        return returnCodes.custom_response(None, 400, "TPM-2", str(err))
+    data = req_data
+    
 
     # Aquí hacemos las validaciones para ver si el catalogo de negocio ya existe previamente
 
     employer_in_db = EmployersModel.get_one_emp(data.get("empleadoId"))
     if not employer_in_db:
-        error = returnCodes.partial_response("TPM-5","",data.get("empleadoId"))
+        error = returnCodes.partial_response("TPM-4","empleado no encontrado",data.get("empleadoId"))
         listaErrores.append(error)
         return returnCodes.custom_response(None, 409, "TPM-5", "", data.get("empleadoId"))
 
@@ -97,11 +83,6 @@ def createUsers(req_data, listaObjetosCreados, listaErrores):
         listaErrores.append(error)
         return returnCodes.custom_response(None, 409, "TPM-5", "", data.get("nombre"))
 
-    rol_in_db = RolesModel.get_one_rol(data.get("rolId"))
-    if not rol_in_db:
-        error = returnCodes.partial_response("TPM-4","",data.get("rolId"))
-        listaErrores.append(error)
-        return returnCodes.custom_response(None, 409, "TPM-4", "", data.get("rolId"))
 
     status_in_db = EstatusUsuariosModel.get_one_status(data.get("statusId"))
     if not status_in_db:

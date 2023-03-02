@@ -131,6 +131,8 @@ class EmployersSchema(Schema):
     puesto = fields.Str(required=True, validate=[validate.Length(max=100)])
     salario = fields.Integer(required=True)
     fechaContratacion = fields.Date()
+    username = fields.Str(required=True, validate=[validate.Length(max=100)])
+    password = fields.Str(required=True,load_only=True)
     
 
 class EmployersSchemaSomeFields(Schema):

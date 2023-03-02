@@ -2,7 +2,7 @@
 from pkgutil import ModuleInfo
 from marshmallow import fields, Schema, validate
 import datetime
-from .StatusModel import EstatusUsuariosModel, EstatusUsuariosSchema
+from .StatusModel import  EstatusUsuariosSchema,EstatusUsuariosModel
 from .EmployersModel import EmployersModel
 from sqlalchemy import desc
 import sqlalchemy
@@ -31,7 +31,7 @@ class BeneficiaryModel(db.Model):
     sexo = db.Column(db.String(100))
 
     status=db.relationship(
-        "EstatusUsuariosModel",backref=db.backref("invStatusUsuarios",lazy=True)
+        "EstatusUsuariosModel",backref=db.backref("invStatusUsuarios2",lazy=True)
     )
     empleado=db.relationship(
         "EmployersModel",backref=db.backref("invEmpleados",lazy=True)
