@@ -18,7 +18,7 @@ from .controllers.StatusController import nsStatusUser
 from flask_restx import Api, fields, Resource
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
-
+import datetime
 def create_app(env_name):
     """
     Create app
@@ -32,8 +32,9 @@ def create_app(env_name):
     app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pymssql://master:peacesells2100@DESKTOP-FGFDBVD\\TEW_SQLEXPRESS/crud_manager'
     
     app.config['JWT_SECRET_KEY'] = 'super-secret'  # La clave secreta que se utilizará para firmar los tokens JWT
+    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = 10
     jwt = JWTManager(app)
-    
+
     db.init_app(app)
 
     migrate = Migrate(app, db)
@@ -52,8 +53,12 @@ def create_app(env_name):
         return returnCodes.custom_response(None, 404, 4041, "TPM-4")
 
     @app.errorhandler(400)
-    def not_found(e):
+    def bad_request(e):
         return returnCodes.custom_response(None, 400, 4001, "TPM-2")
+    
+    @app.errorhandler(401)
+    def unauthorized(e):
+        return returnCodes.custom_response(None, 409, 4001, "TPM-2","No autorizado, token invalido")
 
 
 

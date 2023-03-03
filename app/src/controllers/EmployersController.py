@@ -98,7 +98,7 @@ UsersPutApi = nsEmployers.model(
     }
 )
 
-jwt_token_model = api.model('JWT Token', {
+jwt_token_model = nsEmployers.model('JWT Token', {
     'access_token': fields.String(required=True, description='El token de acceso JWT')
 })
 
@@ -215,11 +215,16 @@ class Usersupdatepass(Resource):
 class UsersList(Resource):
     @nsEmployers.doc("lista de  empleados")
     @jwt_required()
+    #@nsEmployers.expect(jwt_token_model)
+    @nsEmployers.doc(security='Bearer Auth')
     def get(self):
         """List all status"""
-        token = request.headers.get('Authorization', '').replace('Bearer ', '')
+        token = request.headers.get('Authorization')
+        if not token or not token.startswith('Bearer '):
+            return returnCodes.custom_response(None, 401, "TPM-2","token no encontrado y/o invalido")
+        #token = request.headers.get('Authorization', '').replace('Bearer ', '')
         print('getting')
-        users = EmployersModel.get_all_users_ok()
+        users = EmployersModel.get_all_emp_no_pag()
         #return catalogos
         serialized_users = employers_schema.dump(users, many=True)
         return returnCodes.custom_response(serialized_users, 200, "TPM-3")

@@ -78,6 +78,9 @@ class EmployersModel(db.Model):
     def get_all_emp(offset=1,limit=10):
         return EmployersModel.query.order_by(EmployersModel.id).paginate(offset,limit,error_out=False) 
 
+    @staticmethod
+    def get_all_emp_no_pag(offset=1,limit=10):
+        return EmployersModel.query.order_by(EmployersModel.id)
 
     @staticmethod
     def get_one_emp(id):
