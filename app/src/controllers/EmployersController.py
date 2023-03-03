@@ -98,6 +98,10 @@ UsersPutApi = nsEmployers.model(
     }
 )
 
+jwt_token_model = api.model('JWT Token', {
+    'access_token': fields.String(required=True, description='El token de acceso JWT')
+})
+
 def createUsers(req_data, listaObjetosCreados, listaErrores):
     data = req_data
    
@@ -213,6 +217,7 @@ class UsersList(Resource):
     @jwt_required()
     def get(self):
         """List all status"""
+        token = request.headers.get('Authorization', '').replace('Bearer ', '')
         print('getting')
         users = EmployersModel.get_all_users_ok()
         #return catalogos
